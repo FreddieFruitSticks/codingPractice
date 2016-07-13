@@ -1,11 +1,9 @@
-package com.company;
+package com.strings;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
-import java.util.HashMap;
-import java.util.HashSet;
 
 public class SherlockAndAnagrams {
 

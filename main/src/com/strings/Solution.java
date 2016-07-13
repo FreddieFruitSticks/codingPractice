@@ -1,10 +1,6 @@
-package com.company;
+package com.strings;
 
-import sun.security.provider.certpath.SunCertPathBuilder;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
 public class Solution {

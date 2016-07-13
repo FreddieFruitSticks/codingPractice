@@ -1,4 +1,4 @@
-package com.company;
+package com.strings;
 
 /**
  * Created by freddie on 2016/07/07.
