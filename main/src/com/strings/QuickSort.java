@@ -7,9 +7,9 @@ public class QuickSort {
 
     public static void main(String[] args) {
         QuickSort quickSort = new QuickSort();
-        int[] array = {1,3,6,3,9,12,90,2,8,67,56,3,1,99};
+        int[] array = {1, 3, 6, 3, 9, 12, 90, 2, 8, 67, 56, 3, 1, 99};
 
-        quickSort.quickSort(array,0,array.length-1);
+        quickSort.quickSort(array, 0, array.length - 1);
         quickSort.printArray(array);
     }
 
@@ -28,7 +28,7 @@ public class QuickSort {
             while (array[i] < pivot) {
                 i++;
             }
-            while (array[j] > pivot) {
+            while (j >= 0 && array[j] > pivot) {
                 j--;
             }
             if (i <= j) {
@@ -47,11 +47,11 @@ public class QuickSort {
 
     public void quickSort(int[] array, int left, int right) {
         int pivotIndex = partition(array, left, right);
-        if(pivotIndex < right){
+        if (pivotIndex < right) {
             quickSort(array, pivotIndex + 1, right);
         }
-        if(pivotIndex > left){
-            quickSort(array, left, pivotIndex -1);
+        if (pivotIndex > left) {
+            quickSort(array, left, pivotIndex - 1);
         }
     }
 }
