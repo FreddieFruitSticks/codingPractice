@@ -17,9 +17,9 @@ public class ThreeUrns {
         ThreeUrns threeUrns = new ThreeUrns();
         double startTime = System.currentTimeMillis();
         System.out.println(threeUrns.getNumOfMoves(numberOfBeans, 0, maxNumberOfBeansToMove, mapOfSubstructures));
-        double endTime   = System.currentTimeMillis();
+        double endTime = System.currentTimeMillis();
         double totalTime = endTime - startTime;
-        System.out.println(totalTime/1000D);
+        System.out.println(totalTime / 1000D);
     }
 
     public BigInteger getNumOfMoves(int numberOfBeansInFirstUrn, int numberOfBeansInSecondUrn, int maxNumOfBeansToMove, MyOwnMap map) {
@@ -47,7 +47,7 @@ public class ThreeUrns {
 
     //Map with a key that has two values. Collision resolution by means of linked list. Not the most efficient (could use tree)
     //Does not dynamically resize either. Need to implement this.
-    private static class MyOwnMap<K1, K2, V> {
+    private static class MyOwnMap<K1, K2, V extends BigInteger> {
         private MyOwnEntry<K1, K2, V>[] entries;
         private int size;
 
@@ -58,7 +58,7 @@ public class ThreeUrns {
 
         public void put(K1 key1, K2 key2, V value) {
             MyOwnKey<K1, K2> key = new MyOwnKey(key1, key2);
-            MyOwnEntry<K1, K2, V> entry = new MyOwnEntry<>(key1, key2, value, null);
+            MyOwnEntry<K1, K2, V> entry = new MyOwnEntry<>(key1, key2, value, null, null);
 
             MyOwnEntry<K1, K2, V> entryInEntries = entries[key.hashCode() % size];
             if (entryInEntries == null) {
@@ -80,35 +80,37 @@ public class ThreeUrns {
         }
 
         private MyOwnEntry findEntryInLinkedList(MyOwnEntry entry, MyOwnKey key) {
-            while (entry.getNext() != null) {
+            while (entry.getLeft() != null) {
                 if (entry.getKey().equals(key)) {
                     return entry;
                 }
-                entry = entry.getNext();
+                entry = entry.getLeft();
             }
             return null;
         }
 
         private void placeEntryInLinkedList(MyOwnEntry entry, MyOwnEntry entryInEntries) {
-            while (entryInEntries.getNext() != null) {
-                if(entryInEntries.getValue().equals(entry.getValue())){
+            while (entryInEntries.getLeft() != null) {
+                if (entryInEntries.getValue().equals(entry.getValue())) {
                     return;
                 }
-                entryInEntries = entryInEntries.getNext();
+                entryInEntries = entryInEntries.getLeft();
             }
-            entryInEntries.setNext(entry);
+            entryInEntries.setLeft(entry);
         }
     }
 
-    private static class MyOwnEntry<K1, K2, V> {
+    private static class MyOwnEntry<K1, K2, V extends BigInteger> {
         private V value;
         private MyOwnKey<K1, K2> key;
-        private MyOwnEntry next;
+        private MyOwnEntry left;
+        private MyOwnEntry right;
 
-        public MyOwnEntry(K1 key1, K2 key2, V value, MyOwnEntry next) {
+        public MyOwnEntry(K1 key1, K2 key2, V value, MyOwnEntry left, MyOwnEntry right) {
             this.key = new MyOwnKey<>(key1, key2);
             this.value = value;
-            this.next = next;
+            this.left = left;
+            this.right = right;
         }
 
         public MyOwnKey getKey() {
@@ -119,12 +121,24 @@ public class ThreeUrns {
             return value;
         }
 
-        public MyOwnEntry getNext() {
-            return next;
+        public MyOwnEntry getLeft() {
+            return left;
         }
 
-        public void setNext(MyOwnEntry next) {
-            this.next = next;
+        public void setLeft(MyOwnEntry left) {
+            this.left = left;
+        }
+
+        public void setRight(MyOwnEntry right) {
+            this.right = right;
+        }
+
+        public MyOwnEntry getRight() {
+            return right;
+        }
+
+        public boolean lessThan(MyOwnEntry node) {
+            return ((BigInteger) this.getValue()).compareTo((BigInteger) node.getValue()) < 0;
         }
     }
 
@@ -145,7 +159,8 @@ public class ThreeUrns {
             return key2;
         }
 
-        //this weird bit shifting voodoo has a proof in Donald Knuth's book somewhere.
+        //this weird bit shifting voodoo has a proof in Donald Knuth's book somewhere. It's designed to disperse the values
+        //evenly across the array.
         @Override
         public int hashCode() {
             int hash = 7;
@@ -160,4 +175,24 @@ public class ThreeUrns {
             return this.key1 == key.getKey1() && this.key2 == key.getKey2();
         }
     }
+
+    public class MyOwnBinaryTree<K1, K2, V extends BigInteger> {
+        private MyOwnEntry<K1, K2, V> root;
+
+        public MyOwnBinaryTree(K1 key1, K2 key2, V value) {
+            root = new MyOwnEntry<>(key1, key2, value, null, null);
+        }
+
+        public MyOwnEntry search(MyOwnEntry node, MyOwnEntry myOwnEntry) {
+            if (node == null || node.getKey().equals(myOwnEntry.getKey())) {
+                return node;
+            } else if (myOwnEntry.lessThan(node)) {
+                return search(node.getLeft(), myOwnEntry);
+            } else {
+                return search(node.getLeft(), myOwnEntry);
+            }
+
+        }
+    }
+
 }
