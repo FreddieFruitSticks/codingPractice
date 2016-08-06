@@ -56,7 +56,7 @@ public class RedJohn {
         return count;
     }
 
-    public static class aMap<V extends Integer, K extends Integer> {
+    private static class aMap<V extends Integer, K extends Integer> {
         private int size;
         private Entry<V, K>[] entries;
 
@@ -96,7 +96,7 @@ public class RedJohn {
             }
         }
 
-        public class Entry<V, K> {
+        private class Entry<V, K> {
             private V value;
             private K key;
             private Entry<V, K> next;
