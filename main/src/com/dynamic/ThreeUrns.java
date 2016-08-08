@@ -9,17 +9,25 @@ import java.math.BigInteger;
 public class ThreeUrns {
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int numberOfBeans = Integer.valueOf(br.readLine());
-        int maxNumberOfBeansToMove = Integer.valueOf(br.readLine());
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//        int numberOfBeans = Integer.valueOf(br.readLine());
+//        int maxNumberOfBeansToMove = Integer.valueOf(br.readLine());
+//
+//        MyOwnMap<Integer, Integer, BigInteger> mapOfSubstructures = new MyOwnMap<>(100000000);
+//        ThreeUrns threeUrns = new ThreeUrns();
+//        double startTime = System.currentTimeMillis();
+//        System.out.println(threeUrns.getNumOfMoves(numberOfBeans, 0, maxNumberOfBeansToMove, mapOfSubstructures));
+//        double endTime = System.currentTimeMillis();
+//        double totalTime = endTime - startTime;
+//        System.out.println(totalTime / 1000D);
 
-        MyOwnMap<Integer, Integer, BigInteger> mapOfSubstructures = new MyOwnMap<>(100000000);
-        ThreeUrns threeUrns = new ThreeUrns();
-        double startTime = System.currentTimeMillis();
-        System.out.println(threeUrns.getNumOfMoves(numberOfBeans, 0, maxNumberOfBeansToMove, mapOfSubstructures));
-        double endTime = System.currentTimeMillis();
-        double totalTime = endTime - startTime;
-        System.out.println(totalTime / 1000D);
+        MyOwnBinaryTree<Integer, Integer, BigInteger> tree = new MyOwnBinaryTree<>(1, 2, BigInteger.valueOf(100L));
+        MyOwnEntry node = new MyOwnEntry(12, 2, BigInteger.valueOf(200), null, null);
+        tree.insert(node);
+        tree.insert(new MyOwnEntry(12, 1, BigInteger.valueOf(300), null, null));
+        tree.insert(new MyOwnEntry(12, 3, BigInteger.valueOf(150), null, null));
+        MyOwnEntry aNode = tree.search(new MyOwnEntry(12, 1, BigInteger.valueOf(300), null, null));
+        System.out.println(aNode.getValue());
     }
 
     public BigInteger getNumOfMoves(int numberOfBeansInFirstUrn, int numberOfBeansInSecondUrn, int maxNumOfBeansToMove, MyOwnMap map) {
@@ -138,7 +146,7 @@ public class ThreeUrns {
         }
 
         public boolean lessThan(MyOwnEntry node) {
-            return ((BigInteger) this.getValue()).compareTo((BigInteger) node.getValue()) < 0;
+            return ((BigInteger) this.getValue()).compareTo((BigInteger) node.getValue()) <= 0;
         }
     }
 
@@ -176,23 +184,59 @@ public class ThreeUrns {
         }
     }
 
-    public class MyOwnBinaryTree<K1, K2, V extends BigInteger> {
-        private MyOwnEntry<K1, K2, V> root;
+    public static class MyOwnBinaryTree<K1, K2, V extends BigInteger> {
+        private MyOwnEntry<K1, K2, V> root = null;
+
+        public MyOwnBinaryTree() {
+        }
 
         public MyOwnBinaryTree(K1 key1, K2 key2, V value) {
             root = new MyOwnEntry<>(key1, key2, value, null, null);
         }
 
-        public MyOwnEntry search(MyOwnEntry node, MyOwnEntry myOwnEntry) {
-            if (node == null || node.getKey().equals(myOwnEntry.getKey())) {
+        public MyOwnEntry search(MyOwnEntry node){
+            return search(node, this.root);
+        }
+        private MyOwnEntry search(MyOwnEntry node, MyOwnEntry currentNode) {
+            if (currentNode == null) {
+                return null;
+            }else if (node.getKey().equals(currentNode.getKey())) {
                 return node;
-            } else if (myOwnEntry.lessThan(node)) {
-                return search(node.getLeft(), myOwnEntry);
+            } else if (node.lessThan(currentNode)) {
+                return search(node, currentNode.getLeft());
             } else {
-                return search(node.getLeft(), myOwnEntry);
+                return search(node, currentNode.getRight());
+            }
+        }
+
+        //start at root
+        public boolean insert(MyOwnEntry node) {
+            return insert(node, this.root);
+        }
+
+        private boolean insert(MyOwnEntry node, MyOwnEntry currentNode) {
+            if (currentNode == null) {
+                this.root = node;
+                return true;
             }
 
+            //Don't insert if there are equal keys in the tree (duplicate info).
+            if(!currentNode.getKey().equals(node.getKey())){
+                if (node.lessThan(currentNode)) {
+                    if (currentNode.getLeft() == null) {
+                        currentNode.setLeft(node);
+                        return true;
+                    }
+                    return insert(node, currentNode.getLeft());
+                } else {
+                    if (currentNode.getRight() == null) {
+                        currentNode.setRight(node);
+                        return true;
+                    }
+                    return insert(node, currentNode.getRight());
+                }
+            }
+            return false;
         }
     }
-
 }
