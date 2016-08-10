@@ -9,25 +9,17 @@ import java.math.BigInteger;
 public class ThreeUrns {
 
     public static void main(String[] args) throws IOException {
-//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//        int numberOfBeans = Integer.valueOf(br.readLine());
-//        int maxNumberOfBeansToMove = Integer.valueOf(br.readLine());
-//
-//        MyOwnMap<Integer, Integer, BigInteger> mapOfSubstructures = new MyOwnMap<>(100000000);
-//        ThreeUrns threeUrns = new ThreeUrns();
-//        double startTime = System.currentTimeMillis();
-//        System.out.println(threeUrns.getNumOfMoves(numberOfBeans, 0, maxNumberOfBeansToMove, mapOfSubstructures));
-//        double endTime = System.currentTimeMillis();
-//        double totalTime = endTime - startTime;
-//        System.out.println(totalTime / 1000D);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int numberOfBeans = Integer.valueOf(br.readLine());
+        int maxNumberOfBeansToMove = Integer.valueOf(br.readLine());
 
-        MyOwnBinaryTree<Integer, Integer, BigInteger> tree = new MyOwnBinaryTree<>(1, 2, BigInteger.valueOf(100L));
-        MyOwnEntry node = new MyOwnEntry(12, 2, BigInteger.valueOf(200), null, null);
-        tree.insert(node);
-        tree.insert(new MyOwnEntry(12, 1, BigInteger.valueOf(300), null, null));
-        tree.insert(new MyOwnEntry(12, 3, BigInteger.valueOf(150), null, null));
-        MyOwnEntry aNode = tree.search(new MyOwnEntry(12, 1, BigInteger.valueOf(300), null, null));
-        System.out.println(aNode.getValue());
+        MyOwnMap<Integer, Integer, BigInteger> mapOfSubstructures = new MyOwnMap<>(100000000);
+        ThreeUrns threeUrns = new ThreeUrns();
+        double startTime = System.currentTimeMillis();
+        System.out.println(threeUrns.getNumOfMoves(numberOfBeans, 0, maxNumberOfBeansToMove, mapOfSubstructures));
+        double endTime = System.currentTimeMillis();
+        double totalTime = endTime - startTime;
+        System.out.println(totalTime / 1000D);
     }
 
     public BigInteger getNumOfMoves(int numberOfBeansInFirstUrn, int numberOfBeansInSecondUrn, int maxNumOfBeansToMove, MyOwnMap map) {
@@ -56,55 +48,34 @@ public class ThreeUrns {
     //Map with a key that has two values. Collision resolution by means of linked list. Not the most efficient (could use tree)
     //Does not dynamically resize either. Need to implement this.
     private static class MyOwnMap<K1, K2, V extends BigInteger> {
-        private MyOwnEntry<K1, K2, V>[] entries;
+        private MyOwnBinaryTree<K1, K2, V>[] entries;
         private int size;
 
         public MyOwnMap(int size) {
             this.size = size;
-            entries = new MyOwnEntry[size];
+            entries = new MyOwnBinaryTree[size];
         }
 
         public void put(K1 key1, K2 key2, V value) {
             MyOwnKey<K1, K2> key = new MyOwnKey(key1, key2);
             MyOwnEntry<K1, K2, V> entry = new MyOwnEntry<>(key1, key2, value, null, null);
 
-            MyOwnEntry<K1, K2, V> entryInEntries = entries[key.hashCode() % size];
+            MyOwnBinaryTree<K1, K2, V> entryInEntries = entries[key.hashCode() % size];
             if (entryInEntries == null) {
-                entries[key.hashCode() % size] = entry;
+                entries[key.hashCode() % size] = new MyOwnBinaryTree<>(key1, key2, value);
             } else {
-                placeEntryInLinkedList(entry, entryInEntries);
+                entryInEntries.insert(entry);
             }
         }
 
         public MyOwnEntry get(K1 key1, K2 key2) {
             MyOwnKey<K1, K2> key = new MyOwnKey(key1, key2);
-            MyOwnEntry<K1, K2, V> entry = entries[key.hashCode() % size];
-
+            MyOwnBinaryTree<K1, K2, V> entry = entries[key.hashCode() % size];
             if (entry == null) {
                 return null;
             } else {
-                return findEntryInLinkedList(entry, key);
+                return entries[key.hashCode() % size].search(key);
             }
-        }
-
-        private MyOwnEntry findEntryInLinkedList(MyOwnEntry entry, MyOwnKey key) {
-            while (entry.getLeft() != null) {
-                if (entry.getKey().equals(key)) {
-                    return entry;
-                }
-                entry = entry.getLeft();
-            }
-            return null;
-        }
-
-        private void placeEntryInLinkedList(MyOwnEntry entry, MyOwnEntry entryInEntries) {
-            while (entryInEntries.getLeft() != null) {
-                if (entryInEntries.getValue().equals(entry.getValue())) {
-                    return;
-                }
-                entryInEntries = entryInEntries.getLeft();
-            }
-            entryInEntries.setLeft(entry);
         }
     }
 
@@ -113,6 +84,7 @@ public class ThreeUrns {
         private MyOwnKey<K1, K2> key;
         private MyOwnEntry left;
         private MyOwnEntry right;
+
 
         public MyOwnEntry(K1 key1, K2 key2, V value, MyOwnEntry left, MyOwnEntry right) {
             this.key = new MyOwnKey<>(key1, key2);
@@ -146,7 +118,7 @@ public class ThreeUrns {
         }
 
         public boolean lessThan(MyOwnEntry node) {
-            return ((BigInteger) this.getValue()).compareTo((BigInteger) node.getValue()) <= 0;
+            return this.getKey().hashCode() <= node.getKey().hashCode();
         }
     }
 
@@ -194,18 +166,19 @@ public class ThreeUrns {
             root = new MyOwnEntry<>(key1, key2, value, null, null);
         }
 
-        public MyOwnEntry search(MyOwnEntry node){
-            return search(node, this.root);
+        public MyOwnEntry search(MyOwnKey key) {
+            return search(key, this.root);
         }
-        private MyOwnEntry search(MyOwnEntry node, MyOwnEntry currentNode) {
+
+        private MyOwnEntry search(MyOwnKey key, MyOwnEntry currentNode) {
             if (currentNode == null) {
                 return null;
-            }else if (node.getKey().equals(currentNode.getKey())) {
-                return node;
-            } else if (node.lessThan(currentNode)) {
-                return search(node, currentNode.getLeft());
+            } else if (key.equals(currentNode.getKey())) {
+                return currentNode;
+            } else if (key.hashCode() <= currentNode.getKey().hashCode()) {
+                return search(key, currentNode.getLeft());
             } else {
-                return search(node, currentNode.getRight());
+                return search(key, currentNode.getRight());
             }
         }
 
@@ -221,7 +194,7 @@ public class ThreeUrns {
             }
 
             //Don't insert if there are equal keys in the tree (duplicate info).
-            if(!currentNode.getKey().equals(node.getKey())){
+            if (!currentNode.getKey().equals(node.getKey())) {
                 if (node.lessThan(currentNode)) {
                     if (currentNode.getLeft() == null) {
                         currentNode.setLeft(node);
@@ -237,6 +210,36 @@ public class ThreeUrns {
                 }
             }
             return false;
+        }
+
+        private MyOwnEntry findMinNodeInSubTree(MyOwnEntry currentNode) {
+            if (currentNode.getLeft() == null) {
+                return currentNode;
+            } else {
+                return findMinNodeInSubTree(currentNode.getLeft());
+            }
+        }
+
+        private MyOwnEntry delete(MyOwnKey key, MyOwnEntry node) {
+            if(node == null) return node;
+
+            if (key.hashCode() < node.getKey().hashCode()) {
+                node.left = delete(key, node.left);
+            } else if (key.hashCode() > node.getKey().hashCode()) {
+                node.right = delete(key, node.right);
+            } else {
+                if (node.right == null) {
+                    return node.left;
+                } else if (node.left == null) {
+                    return node.right;
+                }
+                MyOwnEntry minNodeOfRightSubtree = findMinNodeInSubTree(node.getRight());
+                node.key = minNodeOfRightSubtree.getKey();
+                node.value = minNodeOfRightSubtree.getValue();
+
+                node.right = delete(node.key, node.getRight());
+            }
+            return node;
         }
     }
 }
