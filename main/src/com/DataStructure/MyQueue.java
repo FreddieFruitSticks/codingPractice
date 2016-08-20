@@ -1,4 +1,4 @@
-package com.dynamic;
+package com.DataStructure;
 
 public class MyQueue {
     Node first;

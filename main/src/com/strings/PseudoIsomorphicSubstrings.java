@@ -3,16 +3,16 @@ package com.strings;
 import java.io.IOException;
 import java.util.*;
 
-public class Solution {
+public class PseudoIsomorphicSubstrings {
 
 
     public static void main(String[] args) throws IOException {
-        Solution solution = new Solution();
+        PseudoIsomorphicSubstrings pseudoIsomorphicSubstrings = new PseudoIsomorphicSubstrings();
         System.out.println((char)91);
 
         //THIS IS FOR HACKERANK
 //        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//        solution.createPseudoIsomorphicSubstrings(br.readLine());
+//        pseudoIsomorphicSubstrings.createPseudoIsomorphicSubstrings(br.readLine());
     }
 
     private void createPseudoIsomorphicSubstrings(String string) {

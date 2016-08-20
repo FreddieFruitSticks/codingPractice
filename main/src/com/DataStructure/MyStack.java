@@ -1,11 +1,11 @@
-package com.dynamic;
+package com.DataStructure;
 
 
-public class MyStack {
+public class MyStack <T> {
     Node lastNode = null;
     Node firstNode = null;
 
-    public void push(int value) {
+    public void push(T value) {
         Node node = new Node();
         node.setValue(value);
         if (isEmpty()) {
@@ -39,7 +39,7 @@ public class MyStack {
     public class Node {
         private Node next;
         private Node previous;
-        private int value;
+        private T value;
 
         public Node getPrevious() {
             return previous;
@@ -49,11 +49,11 @@ public class MyStack {
             this.previous = previous;
         }
 
-        public int getValue() {
+        public T getValue() {
             return value;
         }
 
-        public void setValue(int value) {
+        public void setValue(T value) {
             this.value = value;
         }
 
