@@ -1,10 +1,10 @@
 package com.DataStructure;
 
-public class MyQueue {
-    Node first;
-    Node last;
+public class MyQueue<T> {
+    Node first = null;
+    Node last = null;
 
-    public void enqueue(int value) {
+    public void push(T value) {
         Node node = new Node();
         node.setValue(value);
         if (first == null) {
@@ -17,7 +17,7 @@ public class MyQueue {
         }
     }
 
-    public Node dequeue() {
+    public Node pop() {
         if(this.last==null){
             return last;
         }else if(this.last == this.first){
@@ -33,10 +33,14 @@ public class MyQueue {
         }
     }
 
+    public boolean isEmpty(){
+        return this.first==null && this.last == null;
+    }
+
     public class Node {
         private Node next;
         private Node previous;
-        private int value;
+        private T value;
 
         public Node getPrevious() {
             return previous;
@@ -46,11 +50,11 @@ public class MyQueue {
             this.previous = previous;
         }
 
-        public int getValue() {
+        public T getValue() {
             return value;
         }
 
-        public void setValue(int value) {
+        public void setValue(T value) {
             this.value = value;
         }
 
