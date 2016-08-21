@@ -31,13 +31,13 @@ public class MyGraph {
                 edges[column][row] = 1;
                 line = br.readLine();
             }
-            printMatrix(edges);
+//            printMatrix(edges);
             for (int i = 0; i < numOfVertices; i++) {
                 vertices[i] = i;
             }
 //            printAllPaths(4, 1, edges, new ArrayList<>());
 //            DFS(4, 1, edges);
-//            BFS(4, 1, edges);
+            BFS(4, 1, edges);
 
         } catch (FileNotFoundException e) {
             System.out.println("cant find file" + e);
@@ -64,7 +64,7 @@ public class MyGraph {
             Node node = queue.pop().getValue();
             int value = node.getValue();
             visited.add(value);
-            if(value == positionOfEndVertex){
+            if (value == positionOfEndVertex) {
                 List<Integer> route = node.getRoute();
                 route.add(value);
                 printList(route);
@@ -77,7 +77,6 @@ public class MyGraph {
                 }
             }
         }
-
     }
 
     private static void printAllPaths(int positionOfStartVertex, int positionOfEndVertex, int[][] edges, List<Integer> visited) {
@@ -105,13 +104,11 @@ public class MyGraph {
             Node my = stack.pop().getValue();
             int v = my.getValue();
             visited.add(v);
-
             if (v == positionOfEndVertex) {
                 List<Integer> route = my.getRoute();
                 route.add(v);
                 printList(route);
             }
-
             for (int i = 0; i < edges[v].length; i++) {
                 if (!visited.contains(i) && edges[v][i] == 1) {
                     List<Integer> route = new ArrayList<>(my.getRoute());
