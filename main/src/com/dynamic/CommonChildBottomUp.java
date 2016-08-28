@@ -28,8 +28,6 @@ public class CommonChildBottomUp {
                 } else {
                     wordMesh[i+1][j+1] = Math.max(wordMesh[i+1][j], wordMesh[i][j+1]);
                 }
-
-
             }
         }
         System.out.println(sb.toString());
