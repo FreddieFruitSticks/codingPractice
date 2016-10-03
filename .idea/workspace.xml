@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="662d9a95-94e0-4562-b743-80e7e5e27cd3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/main/src/com/Graphs/ShortestReach.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/main/src/com/Graphs/SynchronousShopping.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/main/src/com/Graphs/FindMinSpanningTree.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Pseudo-isomorphic.iws" />
@@ -54,11 +53,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShortestReach.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="FindMinSpanningTree.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/main/src/com/Graphs/FindMinSpanningTree.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.75510204">
+              <caret line="42" column="4" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ShortestReach.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main/src/com/Graphs/ShortestReach.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.39795917">
-              <caret line="28" column="63" selection-start-line="28" selection-start-column="63" selection-end-line="28" selection-end-column="63" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="22" column="63" selection-start-line="22" selection-start-column="63" selection-end-line="22" selection-end-column="63" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4081#4082#0" expanded="true" />
@@ -142,8 +153,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/main/src/com/company/DiagonalDifference.java" />
-        <option value="$PROJECT_DIR$/main/src/com/company/GemStones.java" />
         <option value="$PROJECT_DIR$/main/src/com/company/FunnyString.java" />
         <option value="$PROJECT_DIR$/main/src/com/company/Anagram.java" />
         <option value="$PROJECT_DIR$/main/src/com/company/Solution.java" />
@@ -191,8 +200,10 @@
         <option value="$PROJECT_DIR$/main/src/com/dynamic/LargestSubMatrix.java" />
         <option value="$PROJECT_DIR$/main/src/com/dynamic/KnapSack.java" />
         <option value="$PROJECT_DIR$/main/src/com/dynamic/InfinteKnapsack.java" />
-        <option value="$PROJECT_DIR$/main/src/com/Graphs/SynchronousShopping.java" />
         <option value="$PROJECT_DIR$/main/src/com/Graphs/ShortestReach.java" />
+        <option value="$PROJECT_DIR$/main/src/com/Graphs/SynchronousShopping.java" />
+        <option value="$PROJECT_DIR$/main/src/com/Graphs/Find.java" />
+        <option value="$PROJECT_DIR$/main/src/com/Graphs/FindMinSpanningTree.java" />
       </list>
     </option>
   </component>
@@ -1023,13 +1034,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///usr/lib/jvm/java-8-oracle/jre/lib/rt.jar!/com/sun/org/glassfish/gmbal/AMXClient.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35357916">
-          <caret line="53" column="15" selection-start-line="53" selection-start-column="15" selection-end-line="53" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/lang/Long.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
@@ -1425,14 +1429,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/src/com/Graphs/SynchronousShopping.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main/src/com/DataStructure/MyGraph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1441,10 +1437,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/main/src/com/Graphs/SynchronousShopping.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main/src/com/Graphs/ShortestReach.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39795917">
-          <caret line="28" column="63" selection-start-line="28" selection-start-column="63" selection-end-line="28" selection-end-column="63" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="63" selection-start-line="22" selection-start-column="63" selection-end-line="22" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4081#4082#0" expanded="true" />
@@ -1471,6 +1475,16 @@
             <element signature="e#6465#6466#0" expanded="true" />
             <element signature="e#6515#6516#0" expanded="true" />
             <element signature="e#6563#6564#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/src/com/Graphs/FindMinSpanningTree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.75510204">
+          <caret line="42" column="4" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
