@@ -6,6 +6,7 @@ import javafx.util.Pair;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -13,7 +14,7 @@ import java.util.StringTokenizer;
 public class FindMinSpanningTree {
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("/home/freddie/Desktop/spanning"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String line;
         if ((line = br.readLine()) != null) {
             StringTokenizer st = new StringTokenizer(line);
@@ -22,6 +23,11 @@ public class FindMinSpanningTree {
 
 
             int[][] graph = new int[numOfNodes][numOfNodes];
+            for(int i = 0; i < numOfNodes; i++){
+                for(int j = 0; j < numOfNodes; j++) {
+                    graph[i][j] = -1;
+                }
+            }
 
             for (int i = 0; i < numOfEdges; i++) {
                 if ((line = br.readLine()) != null) {
@@ -29,8 +35,11 @@ public class FindMinSpanningTree {
                     String first = st.nextToken();
                     String second = st.nextToken();
                     String weight = st.nextToken();
-                    graph[Integer.valueOf(first) - 1][Integer.valueOf(second) - 1] = Integer.valueOf(weight);
-                    graph[Integer.valueOf(second) - 1][Integer.valueOf(first) - 1] = Integer.valueOf(weight);
+                    if(graph[Integer.valueOf(first) - 1][Integer.valueOf(second) - 1] == -1 ||
+                            graph[Integer.valueOf(first) - 1][Integer.valueOf(second) - 1] >= Integer.valueOf(weight)){
+                        graph[Integer.valueOf(first) - 1][Integer.valueOf(second) - 1] = Integer.valueOf(weight);
+                        graph[Integer.valueOf(second) - 1][Integer.valueOf(first) - 1] = Integer.valueOf(weight);
+                    }
                 } else {
                     System.out.println("buffered Reader ate null line");
                 }
@@ -38,9 +47,9 @@ public class FindMinSpanningTree {
             if ((line = br.readLine()) != null) {
                 st = new StringTokenizer(line);
                 int startNode = Integer.valueOf(st.nextToken()) - 1;
-//                printGraph(graph);
+                printGraph(graph);
 //                System.out.println();
-                System.out.println(sumGraph(primsAlgo(graph, startNode)));
+                primsAlgo(graph, startNode);
             } else {
                 System.out.println("null final line");
             }
@@ -77,24 +86,20 @@ public class FindMinSpanningTree {
             int[][] spanningTree = new int[graph.length][graph[0].length];
             Set<Integer> visitedNodes = new HashSet<>();
             Set<Integer> nodesToVisit = new HashSet<>();
+            int sum = 0;
             for (int i = 0; i < graph.length; i++) {
                 nodesToVisit.add(i);
             }
             visitedNodes.add(startNode);
             nodesToVisit.remove(startNode);
-
-
             while (!nodesToVisit.isEmpty()) {
-                int min = -1;
+                int min = -2;
                 int minStartNode = 0;
                 int minEndNode = 0;
                 for (Integer visitedNode : visitedNodes) {
                     for (Integer nodeToVisit : nodesToVisit) {
-                        if (graph[visitedNode][nodeToVisit] < min && graph[visitedNode][nodeToVisit] != 0) {
-                            min = graph[visitedNode][nodeToVisit];
-                            minStartNode = visitedNode;
-                            minEndNode = nodeToVisit;
-                        } else if (min == -1 && graph[visitedNode][nodeToVisit] != 0) {
+                        if ((graph[visitedNode][nodeToVisit] < min && graph[visitedNode][nodeToVisit] != -1) ||
+                                (min == -2 && graph[visitedNode][nodeToVisit] != -1)) {
                             min = graph[visitedNode][nodeToVisit];
                             minStartNode = visitedNode;
                             minEndNode = nodeToVisit;
@@ -102,9 +107,12 @@ public class FindMinSpanningTree {
                     }
                 }
                 spanningTree[minStartNode][minEndNode] = min;
+                spanningTree[minEndNode][minStartNode] = min;
+                sum+=min;
                 visitedNodes.add(minEndNode);
                 nodesToVisit.remove(minEndNode);
             }
+            System.out.println(sum);
             return spanningTree;
         }
         return null;
