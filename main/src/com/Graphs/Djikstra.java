@@ -55,6 +55,10 @@ public class Djikstra {
     private static void printArray(int[] array, int startNode) {
         for (int i = 0; i < array.length; i++) {
             if (i != startNode) {
+                //This is to check if a vertex is disconnected. The array[i] < 0 is when a node is not connected
+                //to the subgraph of the start node but is connected to other nodes also not connected to the subgraph.
+                //Integer.MAX_VALUE then gets added to a weight of an edge and becomes a large negative number due to
+                //two's compliment negation of java.
                 if(array[i] == Integer.MAX_VALUE || array[i] < 0){
                     System.out.print(-1);
                 }else {
@@ -83,10 +87,6 @@ public class Djikstra {
                 }
             }
             startVertex = findMin(vertices, visited);
-
-            if (startVertex == 75){
-                int o = 0;
-            }
             visited[startVertex] = 1;
             notVisited[startVertex] = -1;
         }
