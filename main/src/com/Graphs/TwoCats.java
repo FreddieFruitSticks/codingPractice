@@ -46,6 +46,14 @@ public class TwoCats {
         }
     }
 
+    private static void djikstra(int[][] edges, City[] cities, int startCity, int numOfCities) {
+        int[] visitedNodes = new int[numOfCities];
+        int[] unvisitedNodes = new int[numOfCities];
+
+        for (int i = 0; i < edges[startCity].length; i++) {
+            
+        }
+    }
 
     private static class City {
         int maxNumOfFish;
@@ -80,8 +88,6 @@ public class TwoCats {
         public void setDistances(List<BitMaskAndDistance> distances) {
             this.distances = distances;
         }
-
-
     }
 
     private static class BitMaskAndDistance {
