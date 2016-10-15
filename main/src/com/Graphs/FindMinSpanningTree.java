@@ -1,10 +1,6 @@
 package com.Graphs;
 
-import com.sun.javafx.geom.Edge;
-import javafx.util.Pair;
-
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashSet;
@@ -20,7 +16,6 @@ public class FindMinSpanningTree {
             StringTokenizer st = new StringTokenizer(line);
             int numOfNodes = Integer.valueOf(st.nextToken());
             int numOfEdges = Integer.valueOf(st.nextToken());
-
 
             int[][] graph = new int[numOfNodes][numOfNodes];
             for(int i = 0; i < numOfNodes; i++){
