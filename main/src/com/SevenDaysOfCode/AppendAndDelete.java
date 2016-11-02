@@ -28,7 +28,7 @@ public class AppendAndDelete {
         int shortest = A.length > B.length ? B.length : A.length;
         int longest = A.length > B.length ? A.length : B.length;
         int i = numOfOps - (A.length - index + B.length - index - 2);
-        if (numOfOps >= shortest+longest || ((i) %2==0) ){
+        if (numOfOps >= shortest+longest+2 || ((i) %2==0) ){
             System.out.println("Yes");
         } else {
             System.out.println("No");
