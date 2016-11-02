@@ -3,9 +3,7 @@ package com.Graphs;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class TwoCats {
 
@@ -21,6 +19,11 @@ public class TwoCats {
         }
         City[] cities = new City[numOfCities];
         int[][] edges = new int[numOfRoads][numOfRoads];
+        for (int i = 0; i < edges.length; i++) {
+            for (int j = 0; j < edges[0].length; j++) {
+                edges[i][j] = -1;
+            }
+        }
 
         for (int i = 0; i < numOfCities; i++) {
             st = new StringTokenizer(br.readLine());
@@ -47,46 +50,82 @@ public class TwoCats {
     }
 
     private static void djikstra(int[][] edges, City[] cities, int startCity, int numOfCities) {
-        int[] visitedNodes = new int[numOfCities];
-        int[] unvisitedNodes = new int[numOfCities];
+        Integer[] citiesIndex = new Integer[numOfCities];
+        for(int i = 0; i <numOfCities; i++){
+            citiesIndex[i] = i;
+        }
 
-        for (int i = 0; i < edges[startCity].length; i++) {
-            
+        List<Integer> visitedNodes = new ArrayList();
+        List<Integer> unvisitedNodes = Arrays.asList(citiesIndex);
+
+        while (visitedNodes.size() < numOfCities) {
+            for (int i = 0; i < edges[startCity].length; i++) {
+                Object[] fishOptionsOfCity = cities[startCity].getDistances().keySet().toArray();
+                if (edges[startCity][i] >= 0) {
+                    for (int j = 0; j < fishOptionsOfCity.length; j++) {
+                        BitMaskAndDistance bitMaskAndDistanceOfCity = cities[i].getDistances().get((Integer) fishOptionsOfCity[j]);
+                        if (bitMaskAndDistanceOfCity != null) {
+                            int distanceToCity = cities[startCity].getDistances().get((Integer) fishOptionsOfCity[j]).getDistance() +
+                                    edges[startCity][i];
+                            if (cities[i].getDistances().get((Integer) fishOptionsOfCity[j]).getDistance() >
+                                    distanceToCity) {
+                                cities[i].setDistanceToCity(cities[startCity].getFish() | cities[i].getFish(), distanceToCity);
+                            }
+                        }
+                    }
+                }
+            }
+
+            visitedNodes.add(startCity);
+            unvisitedNodes.remove(startCity);
         }
     }
 
     private static class City {
         int maxNumOfFish;
         int fish;
-        List<BitMaskAndDistance> distances = new ArrayList<>(maxNumOfFish);
-
-        private void initiateDistances() {
-            for (int i = 0; i < maxNumOfFish; i++) {
-                distances.add(new BitMaskAndDistance(fish, Integer.MAX_VALUE));
-            }
-        }
+        HashMap<Integer, BitMaskAndDistance> distances = new HashMap();
 
         public City() {
-            initiateDistances();
+
         }
 
         public City(int fish, int maxNumOfFish) {
             this.maxNumOfFish = maxNumOfFish;
             this.fish = fish;
-            initiateDistances();
         }
 
-        public City(List<BitMaskAndDistance> distances) {
+        public City(HashMap<Integer, BitMaskAndDistance> distances) {
             this.distances = distances;
-            initiateDistances();
         }
 
-        public List<BitMaskAndDistance> getDistances() {
+        public void setDistanceToCity(int fish, int distance) {
+            BitMaskAndDistance bit = new BitMaskAndDistance(fish, distance);
+            distances.put(fish, bit);
+        }
+
+        public HashMap<Integer, BitMaskAndDistance> getDistances() {
             return distances;
         }
 
-        public void setDistances(List<BitMaskAndDistance> distances) {
+        public void setDistances(HashMap<Integer, BitMaskAndDistance> distances) {
             this.distances = distances;
+        }
+
+        public int getMaxNumOfFish() {
+            return maxNumOfFish;
+        }
+
+        public void setMaxNumOfFish(int maxNumOfFish) {
+            this.maxNumOfFish = maxNumOfFish;
+        }
+
+        public int getFish() {
+            return fish;
+        }
+
+        public void setFish(int fish) {
+            this.fish = fish;
         }
     }
 
