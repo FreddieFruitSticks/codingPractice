@@ -11,7 +11,6 @@ public class MergeSort {
 
     private static int[] mergeSort(int[] array) {
         if (array.length > 1) {
-            int midPoint = array.length / 2;
             int[] leftArray = new int[array.length / 2];
             int[] rightArray = new int[array.length - array.length / 2];
 
