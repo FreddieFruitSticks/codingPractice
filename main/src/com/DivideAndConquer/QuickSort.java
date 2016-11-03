@@ -1,4 +1,4 @@
-package com.strings;
+package com.DivideAndConquer;
 
 /**
  * Created by freddie on 2016/06/20.
