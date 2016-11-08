@@ -4,6 +4,7 @@ package com.SevenDaysOfCode;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.util.*;
 
 public class DAGQueries {
@@ -32,7 +33,7 @@ public class DAGQueries {
             int queryNum = Integer.valueOf(st.nextToken());
             int startNode = Integer.valueOf(st.nextToken());
             if(st.hasMoreTokens()){
-                int x = Integer.valueOf(st.nextToken());
+                BigInteger x = new BigInteger(st.nextToken());
                 if (queryNum == 1) {
                     BFS(edges, vertices, startNode, x, 1);
                 }else if(queryNum == 2){
@@ -46,12 +47,12 @@ public class DAGQueries {
         }
     }
 
-    private static void BFS(int[][] edges, Node[] vertices, int startNodeNum, int x, int option) {
+    private static void BFS(int[][] edges, Node[] vertices, int startNodeNum, BigInteger x, int option) {
         Queue<Integer> queue = new LinkedList<>();
 
         queue.add(startNodeNum - 1);
         if(option == 2){
-            if(vertices[startNodeNum-1].getValue() > x){
+            if(vertices[startNodeNum-1].getValue().compareTo(x) == 1){
                 vertices[startNodeNum-1].setValue(x);
             }
         }else{
@@ -62,7 +63,7 @@ public class DAGQueries {
             for (int i = 0; i < edges.length; i++) {
                 if (edges[nodeNum][i] == 1) {
                     if(option == 2 ){
-                        if(vertices[i].getValue() > x){
+                        if(vertices[i].getValue().compareTo(x) == 1){
                             vertices[i].setValue(x);
                         }
                     }else{
@@ -75,18 +76,18 @@ public class DAGQueries {
     }
 
     private static class Node {
-        int value = 0;
+        BigInteger value = BigInteger.ZERO;
         List<Integer> route = new ArrayList<>();
 
         public void addToRoute(Integer node) {
             route.add(node);
         }
 
-        public int getValue() {
+        public BigInteger getValue() {
             return value;
         }
 
-        public void setValue(int value) {
+        public void setValue(BigInteger value) {
             this.value = value;
         }
 
